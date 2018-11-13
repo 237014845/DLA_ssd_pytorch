@@ -416,8 +416,8 @@ class BasicRFB_a(nn.Module):
 
         return out
 
-class RFBNet(nn.Module):
-    """RFB Net for object detection
+class DLANet(nn.Module):
+    """DLA Net for object detection
     The network is based on the SSD architecture.
     Each multibox layer branches into
         1) conv2d for class conf scores
@@ -434,7 +434,7 @@ class RFBNet(nn.Module):
     """
 
     def __init__(self, phase, size, base, extras, head, num_classes):
-        super(RFBNet, self).__init__()
+        super(DLANet, self).__init__()
         self.phase = phase
         self.num_classes = num_classes
         self.size = size
@@ -631,7 +631,7 @@ def multibox(size, vgg, extra_layers, cfg, num_classes):
     elif size == 512:
         indicator = 5
     else:
-        print("Error: Sorry only RFBNet300 and RFBNet512 are supported!")
+        print("Error: Sorry only DLANet300 and DLANet512 are supported!")
         return
 
     for k, v in enumerate(extra_layers):
@@ -654,10 +654,10 @@ def build_net(phase, size=300, num_classes=21):
         print("Error: Phase not recognized")
         return
     if size != 300 and size != 512:
-        print("Error: Sorry only RFBNet300 and RFBNet512 are supported!")
+        print("Error: Sorry only DLANet300 and DLANet512 are supported!")
         return
 
-    return RFBNet(phase, size, *multibox(size, vgg(base[str(size)], 3),
+    return DLANet(phase, size, *multibox(size, vgg(base[str(size)], 3),
                                 add_extras(size, extras[str(size)], 1024),
                                 mbox[str(size)], num_classes), num_classes)
 
